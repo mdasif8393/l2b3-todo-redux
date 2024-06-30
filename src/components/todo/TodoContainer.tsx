@@ -12,7 +12,7 @@ export default function TodoContainer() {
 
   // get data from server
   const { data: todos, isLoading } = useGetTodosQuery(priority, {
-    refetchOnMountOrArgChange: true,
+    // refetchOnMountOrArgChange: true,
   });
 
   if (isLoading) {

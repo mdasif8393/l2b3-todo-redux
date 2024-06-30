@@ -1,9 +1,9 @@
-import { removeTodo, toggleComplete } from "../../redux/features/todoSlice";
-import { useAppDispatch } from "../../redux/hooks";
+import { useUpdateTodoMutation } from "../../redux/api/api";
+import { removeTodo } from "../../redux/features/todoSlice";
 import { Button } from "../ui/button";
 
 type TTodoCardProps = {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   isCompleted?: boolean;
@@ -13,14 +13,29 @@ type TTodoCardProps = {
 export default function TodoCard({
   title,
   description,
-  id,
+  _id,
   isCompleted,
   priority,
 }: TTodoCardProps) {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
+
+  const [updateTodo, { isLoading }] = useUpdateTodoMutation();
 
   const toggleState = () => {
-    dispatch(toggleComplete(id));
+    // dispatch(toggleComplete(id));
+
+    const taskData = {
+      title,
+      description,
+      priority,
+      isCompleted: !isCompleted,
+    };
+
+    const options = {
+      id: _id,
+      data: taskData,
+    };
+    updateTodo(options);
   };
 
   return (
@@ -31,6 +46,7 @@ export default function TodoCard({
         type="checkbox"
         name="complete"
         id="complete"
+        checked={isCompleted}
       />
       <p className="font-semibold flex-1">{title}</p>
 
